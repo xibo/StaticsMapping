@@ -3,6 +3,8 @@
 #include <QByteArray>
 #include <QFile>
 
+#include <CryptoHash.hpp>
+
 #include "Header.hpp"
 #include "Obj8.hpp"
 #include "RecordSequence.hpp"
@@ -21,9 +23,9 @@ namespace Obj8
     void    parse ();
     String  toString () const;
     
-    QString    fileHash () const;
-    QString    textureHash () const;
-    int        size () const;
+    Hash    fileHash () const;
+    Hash    textureHash () const;
+    int     size () const;
     
     QString    basename () const;
     QString    filename () const;
@@ -33,8 +35,8 @@ namespace Obj8
     
   protected:
     QByteArray     m_raw;
-    QString        m_hash_file;
-    QString        m_hash_texture;
+    Hash           m_hash_file;
+    Hash           m_hash_texture;
     QString        m_path, m_basename;
     Header         m_header;
     RecordSequence m_content;

@@ -498,7 +498,7 @@ MainWindow::createForm()
   
   m_object_data_mapper->setModel (m_object_data_model);
   m_object_data_mapper->addMapping (filesize, m_object_data_model->column(Classification::Object::FilesizeProperty));
-  m_object_data_mapper->addMapping (filehash, m_object_data_model->column(Classification::Object::FilehashProperty));
+  //m_object_data_mapper->addMapping (filehash, m_object_data_model->column(Classification::Object::FilehashProperty));
   m_object_data_mapper->addMapping (filename, m_object_data_model->column(Classification::Object::FilenameProperty));
   m_object_data_mapper->addMapping (fictive, m_object_data_model->column(Classification::Object::FictiveProperty), "currentText");
   m_object_data_mapper->addMapping (aircraft, m_object_data_model->column(Classification::Object::AircraftProperty), "currentText");

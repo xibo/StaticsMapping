@@ -9,14 +9,11 @@
 
 
 
-Classification::Object::Hash
+Hash
 Classification::Test::DefinitionsHelper::hash (int i)
 {
   QByteArray ba ((const char *)(&i), sizeof(i));
-  
-  ba = ba.leftJustified (CryptoHash::resultLength(), 0);
-  
-  return (ba.toHex());
+  return (Hash(ba));
 }
 
 
@@ -24,7 +21,7 @@ Classification::Test::DefinitionsHelper::hash (int i)
 Classification::Object::PrimaryKey
 Classification::Test::DefinitionsHelper::objkey (int i)
 {
-  Object::Hash h = hash (i);
+  Hash h(hash(i));
   return (Object (1, h, h).primaryKey());
 }
 

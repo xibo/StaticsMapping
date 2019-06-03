@@ -7,6 +7,8 @@
 
 #include <QtCore/QSet>
 
+#include <CryptoHash.hpp>
+
 #include "Classification.hpp"
 #include "Record.hpp"
 
@@ -114,8 +116,8 @@ namespace Classification
     bool checkConsistency () const;
     
     bool couldMatch (int filesize) const;
-    bool couldMatch (Object::Hash filehash) const;
-    ObjectPointer match (int filesize, Object::Hash obj8file, Object::Hash textures) const;
+    bool couldMatch (Hash filehash) const;
+    ObjectPointer match (int filesize, Hash obj8file, Hash textures) const;
     
     void airportsFromJson (QJsonObject);
     void airportsFromFile (QString);

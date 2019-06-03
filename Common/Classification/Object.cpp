@@ -23,9 +23,9 @@ Classification::Object::propertyByName (PropertyName p)
     case CommentProperty: return ("comment");
     case CompositehashProperty: return ("compositehash");
     case FilenameProperty: return ("filename");
-    case FilehashProperty: return ("filehash");
+    //case FilehashProperty: return ("filehash");
     case FilesizeProperty: return ("filesize");
-    case TexturehashProperty: return ("texturehash");
+    //case TexturehashProperty: return ("texturehash");
     case PurposeProperty: return ("purpose");
     case FictiveProperty: return ("fictive");
     case IntroductionProperty: return ("introduction");
@@ -87,8 +87,8 @@ Classification::Object::Object (Definitions *q, const QJsonObject &o)
   , m_library (o.value("library").toString())
   , m_comment (o.value("comment").toString())
   , m_filename (o.value("filename").toString())
-  , m_filehash (o.value("filehash").toString())
-  , m_texturehash (o.value("texturehash").toString())
+  , m_filehash (o.value("filehash"))
+  , m_texturehash (o.value("texturehash"))
   , m_introduced (o.value("introduced").toInt())
   , m_retired (o.value("retired").toInt())
   , m_size (o.value("size").toInt())
@@ -121,9 +121,9 @@ Classification::Object::toJson () const
   QJsonObject obj = Record::toJson ();
 
   obj.insert ("size", m_size);
-  obj.insert ("texturehash", m_texturehash);
+  obj.insert ("texturehash", m_texturehash.toJson());
   obj.insert ("filename", m_filename);
-  obj.insert ("filehash", m_filehash);
+  obj.insert ("filehash", m_filehash.toJson());
   obj.insert ("livery", m_livery);
   obj.insert ("aircraft", m_aircraft);
   obj.insert ("library", m_library);
@@ -156,17 +156,14 @@ Classification::Object::primaryKeyProperty () const
 bool
 Classification::Object::verifyPrimaryKey (PrimaryKey key) const
 {
-  bool ok;
-  QByteArray ba = QByteArray::fromHex (key.toUtf8());
+  QByteArray hex(key.toLower().toUtf8());
+  QByteArray bin(QByteArray::fromHex(hex));
   
-  ok = false;
-  if (QString::fromUtf8(ba.toHex()) == key) {
-    if (ba.length() == CryptoHash::resultLength()) {
-      ok = true;
-    }
+  if (bin.isEmpty()) {
+    return false;
   }
   
-  return (ok);
+  return (bin.toHex().toLower() == hex);
 }
 
 
@@ -263,7 +260,7 @@ Classification::Object::setFileName (QString filename)
 
 
 
-Classification::Object::Hash
+Hash
 Classification::Object::fileHash () const
 {
   return (m_filehash);
@@ -274,19 +271,15 @@ Classification::Object::fileHash () const
 void
 Classification::Object::setFileHash (Hash s)
 {
-  QByteArray hex = s.toUtf8();
-  QByteArray raw  = QByteArray::fromHex(hex);
-  if (raw.toHex().toLower() == hex.toLower()) {
-    if (raw.size() == CryptoHash::resultLength()) {
-      m_filehash = s;
-      return;
-    }
+  if (s.hasResult(Hash::keyMethod())) {
+    m_filehash = s;
+  } else {
+    throw (std::runtime_error("poor hash"));
   }
-  throw (std::runtime_error("poor hash"));
 }
 
 
-Classification::Object::Hash
+Hash
 Classification::Object::textureHash () const
 {
   return (m_texturehash);
@@ -297,15 +290,11 @@ Classification::Object::textureHash () const
 void
 Classification::Object::setTextureHash (Hash s)
 {
-  QByteArray hex = s.toUtf8();
-  QByteArray raw  = QByteArray::fromHex(hex);
-  if (raw.toHex().toLower() == hex.toLower()) {
-    if (raw.size() == CryptoHash::resultLength()) {
-      m_texturehash = s;
-      return;
-    }
+  if (s.hasResult(Hash::keyMethod())) {
+    m_texturehash = s;
+  } else {
+    throw (std::runtime_error("poor hash"));
   }
-  throw (std::runtime_error("poor hash"));
 }
 
 
@@ -321,12 +310,12 @@ Classification::Object::compositeHash () const
 QString
 Classification::Object::compositeHash (int filesize, Hash filehash, Hash refshash)
 {
-  QString fsize = QString::number (filesize, 16);
+  
   QString retval = QString (
       "%1-%2-%3")
-      .arg (fsize.rightJustified (8, '0'))
-      .arg (filehash)
-      .arg (refshash);
+      .arg(QString::number(filesize, 16).rightJustified(8, '0'))
+      .arg(filehash.resultString(Hash::keyMethod()))
+      .arg(refshash.resultString(Hash::keyMethod()));
   return (retval);
 }
 

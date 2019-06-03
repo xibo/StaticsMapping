@@ -20,12 +20,12 @@ namespace Obj8
     virtual bool satisfied (StringRef) Q_DECL_OVERRIDE;
     
     int     texturesHashed () const;
-    QString result () const;
+    Hash    result () const;
   
   protected:
     void hashTexture (QString);
     
-    CryptoHash m_hash;
+    Hash m_hash;
     int m_processed_textures;
   };
 }

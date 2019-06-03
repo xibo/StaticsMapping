@@ -25,7 +25,7 @@ Obj8::File::File ()
 
 Obj8::File::File (QString path, bool __parse)
   : m_raw (read(path))
-  , m_hash_file (CryptoHash::hash(m_raw))
+  , m_hash_file (m_raw)
   , m_hash_texture ()
   , m_path (path)
   , m_header ()
@@ -39,7 +39,7 @@ Obj8::File::File (QString path, bool __parse)
 
 Obj8::File::File (QFile &file, bool __parse)
   : m_raw (read(file))
-  , m_hash_file (CryptoHash::hash(m_raw))
+  , m_hash_file (m_raw)
   , m_hash_texture ()
   , m_path (file.fileName())
   , m_header ()
@@ -53,7 +53,7 @@ Obj8::File::File (QFile &file, bool __parse)
 
 Obj8::File::File (QString path, QByteArray raw, bool __parse)
   : m_raw (raw)
-  , m_hash_file (CryptoHash::hash(m_raw))
+  , m_hash_file (m_raw)
   , m_hash_texture ()
   , m_path (path)
   , m_header ()
@@ -118,7 +118,7 @@ Obj8::File::toString () const
 
 
 
-QString
+Hash
 Obj8::File::fileHash () const
 {
   return (m_hash_file);
@@ -126,7 +126,7 @@ Obj8::File::fileHash () const
 
 
 
-QString
+Hash
 Obj8::File::textureHash () const
 {
   return (m_hash_texture);

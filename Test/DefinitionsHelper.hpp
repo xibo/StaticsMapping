@@ -14,7 +14,7 @@ namespace Classification
       Q_OBJECT
     
     public:
-      static Object::Hash hash (int i);
+      static Hash hash (int i);
       static Object::PrimaryKey objkey (int i);
     
       

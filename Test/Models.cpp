@@ -318,12 +318,7 @@ Classification::Test::Models::object ()
    * No writes to elements making up the primary key, either
    */
   mdl->setData (mdl->index (0, mdl->column(Object::FilesizeProperty)), 12);
-  mdl->setData (mdl->index (0, mdl->column(Object::FilehashProperty)), QVariant(hash(4)));
-  mdl->setData (mdl->index (0, mdl->column(Object::TexturehashProperty)), QVariant(hash(4)));
   QCOMPARE (mdl->data(mdl->index (0, mdl->column(Object::FilesizeProperty))).toInt(), 1);
-  QCOMPARE (mdl->data(mdl->index (0, mdl->column(Object::FilehashProperty))).toString(), hash(0));
-  QCOMPARE (mdl->data(mdl->index (0, mdl->column(Object::TexturehashProperty))).toString(), hash(0));
-  
   
   
   /*

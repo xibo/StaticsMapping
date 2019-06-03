@@ -4,6 +4,7 @@
 #include <QtCore/QDate>
 #include <QtCore/QJsonObject>
 
+#include <CryptoHash.hpp>
 #include "Classification.hpp"
 #include "Constants.hpp"
 #include "Record.hpp"
@@ -73,9 +74,9 @@ namespace Classification
     Q_PROPERTY (QString  comment       MEMBER m_comment)
     Q_PROPERTY (QString  compositehash READ compositeHash)
     Q_PROPERTY (QString  filename      READ fileName WRITE setFileName)
-    Q_PROPERTY (QString  filehash      READ fileHash)
+    // Q_PROPERTY (QString  filehash      READ fileHash)
     Q_PROPERTY (int      filesize      READ fileSize)
-    Q_PROPERTY (QString  texturehash   READ textureHash)
+    // Q_PROPERTY (QString  texturehash   READ textureHash)
     Q_PROPERTY (Purposes purpose       READ purpose WRITE setPurpose)
     Q_PROPERTY (bool     fictive       MEMBER m_fictive)
     Q_PROPERTY (int      introduction  MEMBER m_introduced)
@@ -92,9 +93,9 @@ namespace Classification
       CommentProperty,
       CompositehashProperty,
       FilenameProperty,
-      FilehashProperty,
+      //FilehashProperty,
       FilesizeProperty,
-      TexturehashProperty,
+      //TexturehashProperty,
       PurposeProperty,
       FictiveProperty,
       IntroductionProperty,
@@ -106,7 +107,6 @@ namespace Classification
     };
     static const char *propertyByName (PropertyName);
     
-    typedef QString Hash;
     typedef int     Size;
     
     Object (const Object &);

@@ -64,7 +64,7 @@ Obj8::TextureHashingVisitor::visit (Global::TextureNormal *t)
 void
 Obj8::TextureHashingVisitor::reset ()
 {
-  m_hash.reset ();
+  m_hash = Hash();
   m_processed_textures = 0;
 }
 
@@ -84,10 +84,10 @@ Obj8::TextureHashingVisitor::texturesHashed () const
 }
 
 
-QString
+Hash
 Obj8::TextureHashingVisitor::result () const
 {
-  return (m_hash.result());
+  return (m_hash);
 }
 
 
@@ -105,16 +105,12 @@ Obj8::TextureHashingVisitor::hashTexture (QString path)
       continue;
     }
     
-    qint64  size = f.size ();
-    uchar  *mmap = f.map (0, size);
-    char   *data = reinterpret_cast<char *>(mmap);
-    
-    for (qint64 i=0, blksize=(1<<20), cursiz; i<size; i+=cursiz) {
-      cursiz = qMin (blksize, size-i);
-      m_hash.addData (data+i, cursiz);
+    QByteArray data(f.readAll());
+    Q_FOREACH(Hash::Algorithm method, Hash::preferedMethods()) {
+      m_hash.addData(method, data);
     }
-    f.unmap (mmap);
-    f.close ();
+    
+    f.close();
     
     ++m_processed_textures;
     

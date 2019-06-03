@@ -726,12 +726,10 @@ Classification::Definitions::couldMatch (int size) const
 
 
 bool
-Classification::Definitions::couldMatch (Object::Hash filehash) const
+Classification::Definitions::couldMatch (Hash filehash) const
 {
-  QString str = filehash.toLower ();
-  
   Q_FOREACH (ObjectPointer p, m_object_table.sorted) {
-    if (p->fileHash() == str) {
+    if (p->fileHash() == filehash) {
       return (true);
     }
   }
@@ -742,7 +740,7 @@ Classification::Definitions::couldMatch (Object::Hash filehash) const
 
 
 Classification::ObjectPointer 
-Classification::Definitions::match (int filesize, Object::Hash obj8file, Object::Hash textures) const
+Classification::Definitions::match (int filesize, Hash obj8file, Hash textures) const
 {
   QString composite = Object::compositeHash (filesize, obj8file, textures);
   
