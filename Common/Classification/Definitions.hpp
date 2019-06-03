@@ -113,9 +113,9 @@ namespace Classification
     
     bool checkConsistency () const;
     
-    bool couldMatch (int) const;
-    bool couldMatch (QString) const;
-    ObjectPointer match (int, QString, QString) const;
+    bool couldMatch (int filesize) const;
+    bool couldMatch (Object::Hash filehash) const;
+    ObjectPointer match (int filesize, Object::Hash obj8file, Object::Hash textures) const;
     
     void airportsFromJson (QJsonObject);
     void airportsFromFile (QString);

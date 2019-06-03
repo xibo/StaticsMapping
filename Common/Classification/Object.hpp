@@ -110,7 +110,7 @@ namespace Classification
     typedef int     Size;
     
     Object (const Object &);
-    Object (Size =-1, QString =QString(), QString =QString());
+    Object (Size filesize=-1, Hash filehash=Hash(), Hash refshash=Hash());
     Object (Definitions *, const QJsonObject &);
     virtual ~Object ();
     
@@ -144,7 +144,7 @@ namespace Classification
     void setTextureHash (Hash);
     
     QString compositeHash () const;
-    static QString compositeHash (int, QString, QString);
+    static QString compositeHash (int filesize, Hash filehash, Hash refshash);
     
     int introduced () const;
     void setIntroduced (int);
@@ -183,7 +183,7 @@ namespace Classification
     QString m_library;
     QString m_comment;
     QString m_filename;
-    QString m_filehash;
+    Hash    m_filehash;
     Hash    m_texturehash;
     int     m_introduced;
     int     m_retired;

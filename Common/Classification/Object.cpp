@@ -40,18 +40,18 @@ Classification::Object::propertyByName (PropertyName p)
 }
 
 
-Classification::Object::Object (Size size, QString fhash, QString thash)
+Classification::Object::Object (Size filesize, Hash filehash, Hash refshash)
   : Record ()
   , m_aircraft ()
   , m_livery ()
   , m_library ()
   , m_comment ()
   , m_filename ()
-  , m_filehash (fhash)
-  , m_texturehash (thash)
+  , m_filehash (filehash)
+  , m_texturehash (refshash)
   , m_introduced (0)
   , m_retired (0)
-  , m_size (size)
+  , m_size (filesize)
   , m_fictive (true)
   , m_purpose (GeneralAviation)
   , m_rotate (RotateNull)
@@ -319,14 +319,14 @@ Classification::Object::compositeHash () const
 
 
 QString
-Classification::Object::compositeHash (int size, QString file, QString texture)
+Classification::Object::compositeHash (int filesize, Hash filehash, Hash refshash)
 {
-  QString fsize = QString::number (size, 16);
+  QString fsize = QString::number (filesize, 16);
   QString retval = QString (
       "%1-%2-%3")
       .arg (fsize.rightJustified (8, '0'))
-      .arg (file)
-      .arg (texture);
+      .arg (filehash)
+      .arg (refshash);
   return (retval);
 }
 
