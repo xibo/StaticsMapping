@@ -12,6 +12,9 @@ struct Hash
 {
   using Algorithm = QCryptographicHash::Algorithm;
   using Algorithms = QSet<Algorithm>;
+  using Results = QMap<Algorithm, QByteArray>;
+  using BackendPointer = QSharedPointer<QCryptographicHash>;
+  using Backends = QMap<Algorithm, BackendPointer>;
   
   Hash();
   Hash(const QJsonValue &json);
@@ -24,9 +27,10 @@ struct Hash
   void addData(Algorithm algo, QByteArray data);
   void addResult(Algorithm algo, QByteArray hash);
   void addResult(Algorithm algo, const QJsonValue &hash);
+  QByteArray result(Algorithm algo) const;
+  
   bool hasResult(Algorithm algo) const;
   Algorithms results() const;
-  QByteArray result(Algorithm algo) const;
   QString resultString(Algorithm algo) const;
   
   static QByteArray hash(QByteArray data, Algorithm algo);
@@ -37,10 +41,10 @@ struct Hash
   bool operator== (const Hash &other) const;
   
 protected:
-  using BackendPointer = QSharedPointer<QCryptographicHash>;
+  Results m_results;
+  Backends m_backends;
   
-  QMap<Algorithm, QByteArray> m_results;
-  QMap<Algorithm, BackendPointer> m_backends;
+protected:
   static Algorithms g_required;
   static Algorithms g_prefered;
   static Algorithm g_key;
