@@ -726,11 +726,13 @@ Classification::Definitions::couldMatch (int size) const
 
 
 bool
-Classification::Definitions::couldMatch (Hash filehash) const
+Classification::Definitions::couldMatch (int filesize, Hash filehash) const
 {
   Q_FOREACH (ObjectPointer p, m_object_table.sorted) {
-    if (p->fileHash() == filehash) {
-      return (true);
+    if (p->fileSize() == filesize) {
+      if (p->fileHash() == filehash) {
+        return (true);
+      }
     }
   }
   

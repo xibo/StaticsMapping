@@ -116,7 +116,7 @@ namespace Classification
     bool checkConsistency () const;
     
     bool couldMatch (int filesize) const;
-    bool couldMatch (Hash filehash) const;
+    bool couldMatch (int filesize, Hash filehash) const;
     ObjectPointer match (int filesize, Hash obj8file, Hash textures) const;
     
     void airportsFromJson (QJsonObject);

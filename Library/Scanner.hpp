@@ -21,6 +21,8 @@ public:
   QDir    dstDir() const;
   QDir    srcDir() const;
   
+  bool    couldMatch (int filesize, const Hash &filehash);
+  Classification::ObjectPointer match (int filesize, const Hash &filehash, const Hash &refshash);
   QString found (Classification::ObjectPointer);
   void    finished (Worker *);
   
@@ -50,5 +52,6 @@ protected:
   
   QMutex m_outstanding_lock;
   int  m_outstanding;
+  bool m_hash_updates;
   bool m_scan_completed;
 };

@@ -30,7 +30,7 @@ main (int argscnt, char **args)
     
     if (definitions->couldMatch (qf.size())) {
       Obj8::File file (qf, false);
-      if (definitions->couldMatch (file.fileHash())) {
+      if (definitions->couldMatch (file.size(), file.fileHash())) {
         try {
           file.parse ();
           Classification::ObjectPointer obj;

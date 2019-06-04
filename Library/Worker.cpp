@@ -58,14 +58,17 @@ Worker::runImpl()
   /*
    * size already matched by primary thread.
    */
-  if (not m_definitions->couldMatch (obj8.fileHash())) {
+  if (not m_scanner->couldMatch (obj8.size(), obj8.fileHash())) {
     throw (std::runtime_error("unknown primary hash"));
   }
   
   obj8.parse ();
 
-  Classification::ObjectPointer metadata = m_definitions->match (obj8.size(), obj8.fileHash(), obj8.textureHash());
-  if (not metadata) {
+  Classification::ObjectPointer metadata(
+    m_scanner->match (obj8.size(), obj8.fileHash(), obj8.textureHash())
+  );
+
+  if (!metadata) {
     throw (std::runtime_error("unknown secondary hash"));
   }
 

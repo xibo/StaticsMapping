@@ -18,6 +18,7 @@ Scanner::Scanner (QString dst, QString src, int max_texture_resolution)
   
   , m_outstanding_lock (QMutex::Recursive)
   , m_outstanding (0)
+  , m_hash_updates (false)
   , m_scan_completed (false)
 {
   if (not m_all) {
@@ -37,6 +38,10 @@ Scanner::Scanner (QString dst, QString src, int max_texture_resolution)
 Scanner::~Scanner ()
 {
   QThreadPool::waitForDone();
+  
+  if (m_hash_updates) {
+    m_all->toFile();
+  }
 }
 
 
@@ -55,6 +60,27 @@ Scanner::srcDir () const
   return (m_src);
 }
 
+
+
+bool
+Scanner::couldMatch(int filesize, const Hash &filehash)
+{
+  QMutexLocker locker (&m_objs_lock);
+  return m_all->couldMatch(filesize, filehash);
+}
+
+
+Classification::ObjectPointer
+Scanner::match(int filesize, const Hash &filehash, const Hash &refshash)
+{
+  QMutexLocker locker (&m_objs_lock);
+  Classification::ObjectPointer retval(m_all->match(filesize, filehash, refshash));
+  if (retval) {
+    m_hash_updates |= retval->addFileHash(filehash);
+    m_hash_updates |= retval->addTextureHash(refshash);
+  }
+  return (retval);
+}
 
 
 QString
