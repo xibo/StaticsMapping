@@ -3,13 +3,12 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaEnum>
-#include <QtCore/QSet>
 
 #include "CryptoHash.hpp"
 
-QList<Hash::Algorithm> Hash::g_required({QCryptographicHash::Keccak_256});
-QList<Hash::Algorithm> Hash::g_prefered({QCryptographicHash::Keccak_256, QCryptographicHash::Sha256});
-Hash::Algorithm Hash::g_key(QCryptographicHash::Keccak_256);
+Hash::Algorithms Hash::g_required({QCryptographicHash::Keccak_256});
+Hash::Algorithms Hash::g_prefered({QCryptographicHash::Keccak_256, QCryptographicHash::Sha256});
+Hash::Algorithm  Hash::g_key(QCryptographicHash::Keccak_256);
 
 Hash::Hash ()
 : m_results{}
@@ -67,6 +66,10 @@ QString Hash::toString() const
   return QJsonDocument(toJson()).toJson();
 }
 
+Hash::Algorithms Hash::results() const
+{
+  return m_results.keys().toSet();
+}
 
 QByteArray Hash::result(Algorithm method) const
 {
@@ -107,13 +110,13 @@ QByteArray Hash::hash(QByteArray data, Algorithm algo)
   return QCryptographicHash::hash(data, algo);
 }
 
-QList<Hash::Algorithm> Hash::requiredMethods()
+Hash::Algorithms Hash::requiredMethods()
 {
   Q_ASSERT(g_required.contains(keyMethod()));
   return g_required;
 }
 
-QList<Hash::Algorithm> Hash::preferedMethods()
+Hash::Algorithms Hash::preferedMethods()
 {
   Q_ASSERT(g_required.contains(keyMethod()));
   return g_prefered;
