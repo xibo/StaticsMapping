@@ -267,6 +267,12 @@ Classification::Object::fileHash () const
 }
 
 
+bool
+Classification::Object::addFileHash(Hash hash)
+{
+  return m_filehash.addResult(hash);
+}
+
 
 void
 Classification::Object::setFileHash (Hash s)
@@ -285,6 +291,12 @@ Classification::Object::textureHash () const
   return (m_texturehash);
 }
 
+
+bool
+Classification::Object::addTextureHash (Hash hash)
+{
+  return (m_texturehash.addResult(hash));
+}
 
 
 void

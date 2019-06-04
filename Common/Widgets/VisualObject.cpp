@@ -15,8 +15,10 @@ namespace Widgets
   , data()
   {
     data = definitions->match(file->size(), file->fileHash(), file->textureHash());
-    
-    if (!data) {
+    if (data) {
+      data->addFileHash(file->fileHash());
+      data->addTextureHash(file->textureHash());
+    } else {
       data.reset(new Classification::Object(file->size(), file->fileHash(), file->textureHash()));
       data->setFileName(file->basename());
     }

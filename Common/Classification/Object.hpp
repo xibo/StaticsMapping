@@ -135,13 +135,15 @@ namespace Classification
     void setFileName (QString);
   
     Hash fileHash () const;
-    void setFileHash (Hash);
+    bool addFileHash (Hash hash);
+    void setFileHash (Hash hash);
   
     Size fileSize () const;
     void setFileSize (Size);
     
     Hash textureHash () const;
-    void setTextureHash (Hash);
+    bool addTextureHash (Hash hash);
+    void setTextureHash (Hash hash);
     
     QString compositeHash () const;
     static QString compositeHash (int filesize, Hash filehash, Hash refshash);

@@ -95,9 +95,37 @@ void Hash::addData(Algorithm method, QByteArray data)
   m_results[method] = m_backends[method]->result();
 }
 
-void Hash::addResult(Algorithm method, QByteArray value)
+bool Hash::addResult(Algorithm method, QByteArray value)
 {
-  m_results.insert(method, value);
+  bool write(true);
+  if (m_results.contains(method)) {
+    if (m_results.value(method) == value) {
+      write = false;
+    }
+  }
+  if (write) {
+    m_results.insert(method, value);
+  }
+  return (write);
+}
+
+bool Hash::addResult(const Hash &other)
+{
+  Q_FOREACH(Algorithm method, requiredMethods()) {
+    if (this->hasResult(method) && other.hasResult(method)) {
+      if (this->result(method) != other.result(method)) {
+        throw std::runtime_error("keyMethod() dismatch");
+      }
+    }
+  }
+  
+  bool retval(false);
+  Q_FOREACH(Algorithm method, other.results()) {
+    if (addResult(method, other.result(method))) {
+      retval = true;
+    }
+  }
+  return (retval);
 }
 
 void Hash::addResult(Algorithm method, const QJsonValue &value)
@@ -143,4 +171,3 @@ bool Hash::operator== (const Hash &other) const
   }
   return (false);
 }
-

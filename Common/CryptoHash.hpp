@@ -25,7 +25,8 @@ struct Hash
   QString toString() const;
   
   void addData(Algorithm algo, QByteArray data);
-  void addResult(Algorithm algo, QByteArray hash);
+  bool addResult(Algorithm algo, QByteArray hash);
+  bool addResult(const Hash &other);
   void addResult(Algorithm algo, const QJsonValue &hash);
   QByteArray result(Algorithm algo) const;
   
